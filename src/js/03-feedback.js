@@ -20,7 +20,7 @@ function onFormSubmit(e) {
     }
     else {
     console.log(formData);
-        console.log('Отправляем форму');
+        // console.log('Отправляем форму');
         e.currentTarget.reset();
         localStorage.removeItem(KEY_STORAGE);
         formData[refs.input.name] = '';
@@ -33,12 +33,29 @@ function onFormInput(evt) {
         localStorage.setItem(KEY_STORAGE, JSON.stringify(formData));
     };
 
+    // function populateFormData() {
+    //     let savedData = localStorage.getItem(KEY_STORAGE);
+    //     if (savedData) {
+    //         savedData = JSON.parse(savedData);
+    //         Object.entries(savedData).forEach(([name, value]) => {
+    //             refs.feedbackForm.elements[name].value = value;
+    //         })
+    //     }
+    // }
     function populateFormData() {
-        let savedData = localStorage.getItem(KEY_STORAGE);
+        const savedData = localStorage.getItem(KEY_STORAGE);
+        const parseddData = JSON.parse(savedData);
+        // console.log(parseddData);
         if (savedData) {
-            savedData = JSON.parse(savedData);
-            Object.entries(savedData).forEach(([name, value]) => {
-                refs.feedbackForm.elements[name].value = value;
-            })
+                if (parseddData.email) {
+                    refs.textarea.value = parseddData.email;
+                    formData[refs.textarea.name] = parseddData.email;
+                }
+                if (parseddData.message) {
+                    refs.input.value = parseddData.message;
+                    formData[refs.input.name] = parseddData.message;
+                }
+            }
         }
-    }
+    
+    
